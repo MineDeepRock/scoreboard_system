@@ -1,0 +1,60 @@
+<?php
+
+namespace scoreboard_system\models;
+
+
+class Scoreboard
+{
+    /**
+     * @var ScoreboardSlot
+     */
+    protected $slot;
+    /**
+     * @var string
+     */
+    protected $title;
+    /**
+     * @var bool
+     */
+    protected $sort;
+
+    /**
+     * @var Score[]
+     */
+    private $scores;
+
+    public function __construct(ScoreboardSlot $slot, string $title, array $scores, bool $sort = false) {
+        $this->slot = $slot;
+        $this->title = $title;
+        $this->sort = $sort;
+        $this->scores = $scores;
+    }
+
+    /**
+     * @return ScoreboardSlot
+     */
+    public function getSlot(): ScoreboardSlot {
+        return $this->slot;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTitle(): string {
+        return $this->title;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getSort(): bool {
+        return $this->sort;
+    }
+
+    /**
+     * @return Score[]
+     */
+    public function getScores(): array {
+        return $this->scores;
+    }
+}
