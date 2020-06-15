@@ -22,7 +22,7 @@ class ScoreboardSystem
         $pk->objectiveName = $scoreboard->getSlot()->getText();
         $pk->displayName = $scoreboard->getTitle();
         $pk->criteriaName = "dummy";
-        $pk->sortOrder = intval($scoreboard->getSort());
+        $pk->sortOrder = $scoreboard->getSortType()->getValue();
         $player->sendDataPacket($pk);
 
         foreach ($scoreboard->getScores() as $score) {

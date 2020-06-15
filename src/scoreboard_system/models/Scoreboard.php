@@ -45,10 +45,10 @@ class Scoreboard
     }
 
     /**
-     * @return bool
+     * @return ScoreSortType
      */
-    public function getSort(): bool {
-        return $this->sort;
+    public function getSortType(): ScoreSortType {
+        return $this->sortType;
     }
 
     /**
