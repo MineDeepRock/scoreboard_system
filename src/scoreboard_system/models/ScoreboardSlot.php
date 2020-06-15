@@ -11,11 +11,11 @@ class ScoreboardSlot
         $this->text = $text;
     }
 
-    static public function sideBar() : ScoreboardSlot {
+    static function sideBar() : ScoreboardSlot {
         return new ScoreboardSlot("sidebar");
     }
 
-    static public function list() : ScoreboardSlot {
+    static function list() : ScoreboardSlot {
         return new ScoreboardSlot("list");
     }
 

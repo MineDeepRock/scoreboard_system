@@ -36,6 +36,11 @@ class ScoreboardSystem
         $player->sendDataPacket($pk);
     }
 
+    static public function updateScoreboard(Player $player, Scoreboard $scoreboard): void {
+        self::deleteScoreboard($player, $scoreboard->getSlot());
+        self::setScoreboard($player, $scoreboard);
+    }
+
     static public function setScore(Player $player, Score $score): void {
         $entry = new ScorePacketEntry();
         $entry->objectiveName = $score->getSlot()->getText();
@@ -50,7 +55,7 @@ class ScoreboardSystem
         $player->sendDataPacket($pk);
     }
 
-    static public function removeScore(Player $player, Score $score): void {
+    static public function deleteScore(Player $player, Score $score): void {
         $entry = new ScorePacketEntry();
         $entry->objectiveName = $score->getSlot()->getText();
         $entry->scoreboardId = $score->getId();
@@ -59,5 +64,10 @@ class ScoreboardSystem
         $pk->type = $pk::TYPE_REMOVE;
         $pk->entries[] = $entry;
         $player->sendDataPacket($pk);
+    }
+
+    static public function updateScore(Player $player, Score $score) {
+        self::deleteScore($player, $score);
+        self::setScore($player, $score);
     }
 }

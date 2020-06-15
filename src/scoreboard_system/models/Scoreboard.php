@@ -14,19 +14,19 @@ class Scoreboard
      */
     protected $title;
     /**
-     * @var bool
+     * @var ScoreSortType
      */
-    protected $sort;
+    protected $sortType;
 
     /**
      * @var Score[]
      */
     private $scores;
 
-    public function __construct(ScoreboardSlot $slot, string $title, array $scores, bool $sort = false) {
+    public function __construct(ScoreboardSlot $slot, string $title, array $scores, ScoreSortType $sortType) {
         $this->slot = $slot;
         $this->title = $title;
-        $this->sort = $sort;
+        $this->sortType = $sortType;
         $this->scores = $scores;
     }
 
