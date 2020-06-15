@@ -22,3 +22,35 @@ class LobbyScoreboard extends Scoreboard
 
 ScoreboardSystem::setScoreboard($player, new LobbyScoreboard($count));
 ```
+
+### メソッド
+
+set scoreboard
+```php
+ScoreboardSystem::setScoreboard($player,$scoreboard);
+```
+
+delete scoreboard
+```php
+ScoreboardSystem::deleteScoreboard($player,$scoreboard);
+```
+
+update scoreboard
+```php
+ScoreboardSystem::updateScoreboard($player,$scoreboard);
+```
+
+set score
+```php
+ScoreboardSystem::setScore($player,$score);
+```
+
+delete score
+```php
+ScoreboardSystem::deleteScore($player,$score);
+```
+
+update score
+```php
+ScoreboardSystem::updateScore($player,$score);
+```
