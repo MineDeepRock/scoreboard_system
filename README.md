@@ -1,7 +1,22 @@
 # ScoreboardSystem
 スコアボードを簡単に実装できます
 
+use文
 ```php
+use scoreboard_system\models\Scoreboard;
+use scoreboard_system\models\Score;
+use scoreboard_system\models\ScoreboardSlot;
+use scoreboard_system\models\ScoreSortType;
+```
+
+sample
+```php
+use scoreboard_system\models\Scoreboard;
+use scoreboard_system\models\Score;
+use scoreboard_system\models\ScoreboardSlot;
+use scoreboard_system\models\ScoreSortType;
+use pocketmine\Player;
+
 class PlayerStatusScoreboard extends Scoreboard
 {
     private static function create(string $name, int $money, int $level): Scoreboard {
@@ -36,5 +51,5 @@ PlayerStatusScoreboard::update($player, $money, $level);
 PlayerStatusScoreboard::addScore($player, "ようこそ", 4, 4);
 PlayerStatusScoreboard::updateScore($player, "ようこそ○○サーバーへ", 4, 4);
 PlayerStatusScoreboard::deleteScore($player, 4);
-***?
+***/
 ```
