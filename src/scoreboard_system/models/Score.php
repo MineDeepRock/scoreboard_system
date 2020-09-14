@@ -23,7 +23,7 @@ class Score
      */
     private $id;
 
-    public function __construct(ScoreboardSlot $slot, string $text, int $value, int $id) {
+    public function __construct(ScoreboardSlot $slot, string $text, ?int $value = null, ?int $id = null) {
         $this->slot = $slot;
         $this->text = $text;
         $this->value = $value;
@@ -38,16 +38,16 @@ class Score
     }
 
     /**
-     * @return int
+     * @return NULL|int
      */
-    public function getValue(): int {
+    public function getValue(): ?int {
         return $this->value;
     }
 
     /**
-     * @return int
+     * @return NULL|int
      */
-    public function getId(): int {
+    public function getId(): ?int {
         return $this->id;
     }
 

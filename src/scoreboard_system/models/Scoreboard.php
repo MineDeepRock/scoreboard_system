@@ -8,6 +8,7 @@ use pocketmine\network\mcpe\protocol\SetDisplayObjectivePacket;
 use pocketmine\network\mcpe\protocol\SetScorePacket;
 use pocketmine\network\mcpe\protocol\types\ScorePacketEntry;
 use pocketmine\Player;
+use pocketmine\utils\TextFormat;
 
 class Scoreboard
 {
@@ -29,15 +30,19 @@ class Scoreboard
      */
     static protected $scores;
 
-    public function __construct(ScoreboardSlot $slot, string $title, array $scores, ScoreSortType $sortType) {
+    //setting
+    static private $autoIndex;
+
+    public function __construct(ScoreboardSlot $slot, string $title, array $scores, ScoreSortType $sortType, bool $autoIndex = true) {
         self::$slot = $slot;
         self::$title = $title;
         self::$sortType = $sortType;
         self::$scores = $scores;
+        self::$autoIndex = $autoIndex;
     }
 
-    protected static function __create(ScoreboardSlot $slot, string $title, array $scores, ScoreSortType $sortType): Scoreboard {
-        return new Scoreboard($slot, $title, $scores, $sortType);
+    protected static function __create(ScoreboardSlot $slot, string $title, array $scores, ScoreSortType $sortType, bool $autoIndex = true): Scoreboard {
+        return new Scoreboard($slot, $title, $scores, $sortType, $autoIndex);
     }
 
     static function __send(Player $player, Scoreboard $scoreboard): void {
@@ -49,8 +54,12 @@ class Scoreboard
         $pk->sortOrder = $scoreboard->getSortType()->getValue();
         $player->sendDataPacket($pk);
 
-        foreach ($scoreboard->getScores() as $score) {
-            self::addScore($player, $score->getText(), $score->getValue(), $score->getId());
+        foreach ($scoreboard->getScores() as $index => $score) {
+            if (self::$autoIndex) {
+                $score = new Score($score->getSlot(), $score->getText(), $index, $index);
+            }
+
+            self::addScore($player, $score);
         }
     }
 
@@ -65,14 +74,19 @@ class Scoreboard
         $player->sendDataPacket($pk);
     }
 
-    static function addScore(Player $player, string $text, int $value, int $id): void {
-        $score = new Score(self::$slot, $text, $value, $id);
+    static function addScore(Player $player, Score $score): void {
         self::$scores[] = $score;
 
         $entry = new ScorePacketEntry();
         $entry->objectiveName = $score->getSlot()->getText();
         $entry->type = $entry::TYPE_FAKE_PLAYER;
-        $entry->customName = $score->getText();
+
+        if (self::hasSameTextScore($score->getText())) {
+            $entry->customName = $score->getText() . str_repeat(TextFormat::RESET, self::countSameTextScore($score->getText()));
+        } else {
+            $entry->customName = $score->getText();
+        }
+
         $entry->score = $score->getValue();
         $entry->scoreboardId = $score->getId();
 
@@ -103,9 +117,9 @@ class Scoreboard
         $player->sendDataPacket($pk);
     }
 
-    static function updateScore(Player $player, string $text, int $value, int $id) {
-        self::deleteScore($player, $id);
-        self::addScore($player, $text, $value, $id);
+    static function updateScore(Player $player, Score $score) {
+        self::deleteScore($player, $score->getId());
+        self::addScore($player, $score);
     }
 
     /**
@@ -134,5 +148,28 @@ class Scoreboard
      */
     public function getScores(): array {
         return self::$scores;
+    }
+
+    private static function hasSameTextScore(string $text): bool {
+        foreach (self::$scores as $score) {
+            if ($score->getText() === $text) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private static function countSameTextScore(string $text): int {
+
+        $count = 0;
+
+        foreach (self::$scores as $score) {
+            if ($score->getText() === $text) {
+                $count++;
+            }
+        }
+
+        return $count;
     }
 }
